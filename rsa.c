@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
 // Function to perform modular exponentiation
 // (a^b) % c
 int power(int base, unsigned int exponent, int modulus) {
@@ -53,7 +52,7 @@ int findGCD(int num1, int num2){
 
 // Function to find a suitable public exponent (e)
 int findPublicKeyExponent(int r) {
-    int e = 2; // 1 < e < r
+    long int e = 2; // 1 < e < r
     // Increment e until it is coprime with r
     while (1) {
         // Check if e and r are coprime
@@ -67,7 +66,7 @@ int findPublicKeyExponent(int r) {
 
 // Function to find a suitable private key exponent (e)
 int findPrivateKeyExponent(int e, int r) {
-    int d = 0; //d ≡ e^−1 (mod r)
+    long long int d = 0; //d ≡ e^−1 (mod r)
     // Increment d until it is the modular multiplicative inverse of e modulo r. 
     while (1) {
         // Check if d is modular multiplicative inverse of e mod r
@@ -88,6 +87,8 @@ int main() {
     int p;
     int q;
     int iterations = 5; // Number of iterations for prime test
+
+    int data, cipher, decrypt;
 
     // Seed the random number generator
     srand(time(NULL));
@@ -113,9 +114,9 @@ int main() {
     }
 
     // continue with RSA algo function
-    int n = p * q;
+    long int n = p * q;
 
-    int r = (p-1) * (q-1);
+    long int r = (p-1) * (q-1);
 
     // Find a suitable public exponent (e)
     int e = findPublicKeyExponent(r);
@@ -124,6 +125,15 @@ int main() {
     // Find private key exponent (d)
     int d = findPrivateKeyExponent(e, r);
     printf("d value is: %d\n", d);
+
+    printf("Enter numerical data: ");
+	scanf("%d", &data);
+
+	cipher = power(data, e, n);
+	printf("The cipher text is: %d\n", cipher);
+
+	decrypt = power(cipher, d, n);
+	printf("The decrypted text is: %d\n", decrypt);
 
     return 0;
 }
